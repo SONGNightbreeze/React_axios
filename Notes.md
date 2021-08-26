@@ -4,12 +4,12 @@
 * the front-end application needs to interact with the backend by ajax requests (json data)
 *  the react application needs to integrate ajax library
         ajax request libraries
-      * jQuery: not recommended 
+      * jQuery: not recommended
+      
                 React aims to minimise its own manipulation of the DOM, while jQuery is used exclusively to manipulate the DOM
-      * axios:  recommended
-                1). Wrap XMLHttpRequest object in ajax
-                2). promise style
-                3). Can be used on browser and node server
+      * axios:   
+      	* Wrap XMLHttpRequest object in ajax
+      	* promise style , Can be used on browser and node server
 
 **install axios  ==> yarn add axios**
 
@@ -21,7 +21,7 @@ getStudentData = () =>{
         // To send a request by axios
         // The request is sent to a prepared server http://localhost:5000/students
         // test proxy server is built with nodejs+espress     file => server1.js
-        //axios.get('http://localhost:5000/students').then(  error,cause crossdomain 
+        //axios.get('http://localhost:5000/students').then    error,cause crossdomain 
         //Set proxy to resolve crossdomain after address to change port 3000
         axios.get('http://localhost:3000/api1/students').then(
                 response => {console.log('succeed',response.data);},
@@ -52,24 +52,23 @@ render() {
   error, Access-Control-Allow-Origin means cross domain error
 
 * The current location http://localhost:3000 wants to 
-  give server1 http://localhost:5000/ students send request
-  first of all we need to know 
-  Because of cross domain, is ajax not able to send, or ajax can send but data can't be returned?
+  give server1 http://localhost:5000/ students send request  
+  first of all we need to know   
+  Because of cross domain, is ajax not able to send, or ajax can send but data can't be returned?  
   Can send but the data doesn't come back because I  back to the server1 and check the display under the terminal, it shows that someone requested the server 1
 
-* How to solve the problem - proxy
-  The proxy is also open on port 3000 and located at http://localhost:3000
-  It also sends a request to the proxy on port 3000 and 
-  then sends it to http://localhost:5000/students
-  When receiving, the proxy can also receive, because the proxy does not have an ajax engine, 
-  the essence of the problem of cross-domain is that the ajax engine blocks the response
+* How to solve the problem - proxy  
+  The proxy is also open on port 3000 and located at http://localhost:3000  
+  It also sends a request to the proxy on port 3000 and then sends it to http://localhost:5000/students  
+  When receiving, the proxy can also receive, because the proxy does not have an ajax engine,   
+  the essence of the problem of cross-domain is that the ajax engine blocks the response  
   So using the proxy can receive the data
 
--->
 
 ---------------------------------------------------------------
 
-## How to use proxy to resolve cross-domain issues: two methods
+
+# How to use proxy to resolve cross-domain issues: two methods
 
 ## Method 1.
 
@@ -93,12 +92,13 @@ we can try axios.get('http://localhost:3000/index.html').then
 Instead of getting the student data, you get the public/index.html file under staging, 
 which is the index.html under 3000 that was requested
 so the public file is the root path of the server on port 3000
-If you try it to axios.get('http://localhost:3000/index2.html').then
 
-report an error because there is no index2.html file in public under the root path of port 3000.
-then the server1.js server is requested again, and the server terminal shows that it was requested.
-Because the public is not found on port 3000, it automatically goes to server1.js on port 5000 to find it.
-the principle of configuring the proxy is that if there is no data on port 3000, then it will look for data on port 5000.
+If you try it to axios.get('http://localhost:3000/index2.html').then  
+report an error because there is no index2.html file in public under the root path of port 3000.  
+then the server1.js is requested again, and the server terminal shows that it was requested.  
+Because the public is not found on port 3000, it automatically goes to server1.js on port 5000 to find it.  
+
+the principle of configuring the proxy is that if there is no data on port 3000, then it will look for data on port 5000.  
 
 
 ## Method 2.
